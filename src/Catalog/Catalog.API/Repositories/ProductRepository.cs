@@ -21,7 +21,7 @@ namespace Catalog.API.Repositories
 
         public async Task<bool> DeleteProduct(string id)
         {
-            var deleteResult =  await _products.DeleteOneAsync(id);
+            var deleteResult =  await _products.DeleteOneAsync(p => p.Id.Equals(id));
 
 
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
