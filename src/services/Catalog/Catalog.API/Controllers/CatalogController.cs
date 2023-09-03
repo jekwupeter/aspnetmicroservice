@@ -53,7 +53,7 @@ namespace Catalog.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Product>> CreateProduct(Product product)
+        public async Task<ActionResult<Product>> CreateProduct([FromBody]Product product)
         {
             await _repo.CreateProduct(product);
 
@@ -62,7 +62,7 @@ namespace Catalog.API.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> UpdateProduct(Product product)
+        public async Task<ActionResult> UpdateProduct([FromBody]Product product)
         {
             var response = await _repo.UpdateProduct(product);
 

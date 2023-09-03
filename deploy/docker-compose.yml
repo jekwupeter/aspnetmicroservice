@@ -1,16 +1,44 @@
 version: '3.9'
 
 services:
-  catalog.api:
+  catalog-api:
     container_name: catalog-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "DbSettings:mongo-url=mongodb://mongodb:27017"
     build:
-      context: ../src/catalog/
+      context: ../src/services/catalog/
       dockerfile: Dockerfile
     ports:
       - "5000:80"
+    depends_on:
+      - mongodb
+
+  basket-api:
+    container_name: basket-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "Redis:url=redis:6379"
+    build:
+      context: ../src/services/basket/
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    depends_on:
+      - redis
+  
+  discount-api:
+    container_name: discount-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DbSettings:mongo-url=mongodb://mongodb:27017"
+    build:
+      context: ../src/services/discount/
+      dockerfile: Dockerfile
+    ports:
+      - "5002:80"
+    depends_on:
+      - mongodb
   
   # infrastructures
   mongodb:
@@ -19,4 +47,20 @@ services:
     restart: always
     ports:
       - 27017:27017
-  
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+
+  portainer:
+    image: "portainer/portainer-ce:2.19.0-alpine"
+    container_name: portainer
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer:/data
