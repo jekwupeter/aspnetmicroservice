@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Npgsql;
 
-namespace Discount.API.Extensions
+namespace Discount.Grpc.Extensions
 {
     public static class MiddlewareExtensions
     {
