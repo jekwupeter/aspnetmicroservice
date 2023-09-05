@@ -9,6 +9,9 @@
 *.user
 *.userosscache
 *.sln.docstates
+[Pp]ortainer/
+[Pp]ostgres/
+[Pp]gadmin/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
