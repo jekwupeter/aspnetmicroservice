@@ -1,0 +1,92 @@
+version: '3.9'
+
+services:
+  catalog-api:
+    container_name: catalog-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DbSettings:mongo-url=mongodb://mongodb:27017"
+    build:
+      context: ../src/services/catalog/
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - mongodb
+
+  basket-api:
+    container_name: basket-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "Redis:url=redis:6379"
+    build:
+      context: ../src/services/basket/
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    depends_on:
+      - redis
+  
+  discount-api:
+    container_name: discount-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:DiscountDb=User ID=sa;Password=admin;Host=postgres;Port=5432;Database=discountDb"
+    build:
+      context: ../src/services/discount/
+      dockerfile: Dockerfile
+    ports:
+      - "5002:80"
+    depends_on:
+      - postgres
+  
+  # infrastructures
+  mongodb:
+    image: "mongo:latest"
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+
+  portainer:
+    image: "portainer/portainer-ce:2.19.0-alpine"
+    container_name: portainer
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer:/data
+  
+  postgres:
+    image: "postgres:latest"
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=sa
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=discountDb
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres:/var/lib/postgresql/data/
+      
+  pgadmin:
+    image: "dpage/pgadmin4"
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@aspnetrun.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    restart: always
+    ports:
+      - "5050:80"
+    volumes:
+      - ./pgadmin:/root/.pgadmin
+ 
