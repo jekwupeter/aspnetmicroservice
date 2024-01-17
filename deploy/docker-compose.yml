@@ -1,4 +1,5 @@
 version: '3.9'
+name: e-commerce-microservice
 
 services:
   catalog-api:
@@ -19,9 +20,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "Redis:url=redis:6379"
+      - "GrpcSetting:DiscountUrl=http://discount-grpc"
     build:
-      context: ../src/services/basket/
-      dockerfile: Dockerfile
+      context: ../src/services
+      dockerfile: ./basket/basket.api/Dockerfile
     ports:
       - "5001:80"
     depends_on:
@@ -33,10 +35,23 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings:DiscountDb=User ID=sa;Password=admin;Host=postgres;Port=5432;Database=discountDb"
     build:
-      context: ../src/services/discount/
+      context: ../src/services/discount/discount.api
       dockerfile: Dockerfile
     ports:
       - "5002:80"
+    depends_on:
+      - postgres
+   
+  discount-grpc:
+    container_name: discount-grpc
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:DiscountDb=User ID=sa;Password=admin;Host=postgres;Port=5432;Database=discountDb"
+    build:
+      context: ../src/services/discount/discount.grpc
+      dockerfile: Dockerfile
+    ports:
+      - "5003:80"
     depends_on:
       - postgres
   

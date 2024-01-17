@@ -21,16 +21,19 @@ namespace Discount.Grpc.Extensions
                 await using var dataSource = builder.Build();
                 await using var conn = await dataSource.OpenConnectionAsync();
 
-                await conn.ExecuteAsync("DROP TABLE IF EXISTS Coupon");
+                int affectedCount = 0;
+                affectedCount = await conn.ExecuteAsync("DROP TABLE IF EXISTS Coupon");
 
-                await conn.ExecuteAsync(@"CREATE TABLE Coupon(Id SERIAL PRIMARY KEY, 
+                affectedCount = await conn.ExecuteAsync(@"CREATE TABLE Coupon(Id SERIAL PRIMARY KEY, 
                                                                 ProductName VARCHAR(24) NOT NULL,
                                                                 Description TEXT,
                                                                 Amount INT)");
 
-                await conn.ExecuteAsync("INSERT INTO Coupon (ProductName, Description, Amount) VALUES ('IPhone X', 'IPhone Discount', 150)");
+                affectedCount = await conn.ExecuteAsync("INSERT INTO Coupon (ProductName, Description, Amount) VALUES ('IPhone X', 'IPhone Discount', 150)");
 
-                await conn.ExecuteAsync("INSERT INTO Coupon (ProductName, Description, Amount) VALUES ('Samsung 10', 'Samsung Discount', 100)");
+                affectedCount = await conn.ExecuteAsync("INSERT INTO Coupon (ProductName, Description, Amount) VALUES ('Samsung 10', 'Samsung Discount', 100)");
+
+
 
                 log.LogInformation("Completed  migration to postgresql database.");
             }
