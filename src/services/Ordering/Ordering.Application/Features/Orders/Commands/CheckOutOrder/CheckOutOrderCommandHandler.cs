@@ -5,7 +5,6 @@ using Ordering.Application.Contracts.Infrastructure;
 using Ordering.Application.Contracts.Persistence;
 using Ordering.Application.Models;
 using Ordering.Domain.Entities;
-using System.Reflection.Metadata;
 
 namespace Ordering.Application.Features.Orders.Commands.CheckOutOrder
 {
