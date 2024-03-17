@@ -40,7 +40,7 @@ namespace Discount.Grpc.Extensions
             catch(NpgsqlException ex) 
             {
                 log.LogError("Error occured while applying pgsql migration. Ex: {ex}", ex.Message);
-                if (retryForAvailability > 50)
+                if (retryForAvailability < 50)
                 {
                     retryForAvailability++;
                     Thread.Sleep(2000);
