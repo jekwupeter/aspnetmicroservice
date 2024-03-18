@@ -54,18 +54,31 @@ services:
       - "5003:80"
     depends_on:
       - postgres
+
+  order-api:
+    container_name: order-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:OrderingConnectionString=Server=sqlserver,1434;Database=OrderDb;User Id=sa;Password=testxoxo.;TrustServerCertificate=True;"
+    build:
+      context: ../src/services/ordering/
+      dockerfile: Dockerfile
+    ports:
+      - "5004:80"
+    depends_on:
+      - sqlserver
   
   # infrastructures
   mongodb:
     image: "mongo:latest"
-    container_name: mongodb
+    container_name: catalog-db
     restart: always
     ports:
       - 27017:27017
 
   redis:
     image: "redis:alpine"
-    container_name: redis
+    container_name: basket-db
     restart: always
     ports:
       - 6379:6379
@@ -82,7 +95,7 @@ services:
   
   postgres:
     image: "postgres:latest"
-    container_name: postgres
+    container_name: discount-db
     environment:
       - POSTGRES_USER=sa
       - POSTGRES_PASSWORD=admin
@@ -104,4 +117,13 @@ services:
       - "5050:80"
     volumes:
       - ./pgadmin:/root/.pgadmin
- 
+   
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: order-db
+    environment:
+      - MSSQL_SA_PASSWORD=0tYKUl--tx0xo.
+      - ACCEPT_EULA="Y"
+    restart: always
+    ports:
+      - "1434:1433"

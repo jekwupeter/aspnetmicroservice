@@ -23,6 +23,7 @@ namespace Ordering.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<OrdersDTO>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<OrdersDTO>>> GetordersByUserName(string username)
         {
+            // create new query obj
             var query = new GetOrdersListQuery(username);
             var orders = await _mediator.Send(query);
 

@@ -32,7 +32,7 @@ namespace Ordering.Application.Features.Orders.Commands.DeleteOrder
             }
 
             // map changes to fetch data
-            _map.Map(request, orderToDelete, typeof(UpdateOrderCommand), typeof(Order));
+            _map.Map(request, orderToDelete, typeof(DeleteOrderCommand), typeof(Order));
 
             await _repo.DeleteAsync(orderToDelete);
 

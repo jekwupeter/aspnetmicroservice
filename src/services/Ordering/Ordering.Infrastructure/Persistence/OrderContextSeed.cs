@@ -24,10 +24,11 @@ namespace Ordering.Infrastructure.Persistence
                     UserName = "adm",
                     FirstName = "Cephas",
                     LastName = "Peter",
-                    EmailAddress = "cephaspeter123@gmail.com",
+                    EmailAddress = "test@gmail.com",
                     AddressLine = "Lagos",
                     Country = "Nigeria",
-                    TotalPrice = 40
+                    TotalPrice = 40,
+                    CCV = ""
                     }
                 };
         }
